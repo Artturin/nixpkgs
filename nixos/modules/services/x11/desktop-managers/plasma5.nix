@@ -300,6 +300,7 @@ in
           plasma-systemmonitor
           plasma-browser-integration
           plasma-integration
+          plasma-systemmonitor # will replace ksysguard
           polkit-kde-agent
           spectacle
           systemsettings
