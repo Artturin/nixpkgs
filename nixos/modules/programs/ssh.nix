@@ -14,7 +14,7 @@ let
     ''
       #! ${pkgs.runtimeShell} -e
       export DISPLAY="$(systemctl --user show-environment | ${pkgs.gnused}/bin/sed 's/^DISPLAY=\(.*\)/\1/; t; d')"
-      exec ${askPassword}
+      exec ${askPassword} "$@"
     '';
 
   knownHosts = map (h: getAttr h cfg.knownHosts) (attrNames cfg.knownHosts);
@@ -286,7 +286,7 @@ in
         # Allow ssh-agent to ask for confirmation. This requires the
         # unit to know about the user's $DISPLAY (via ‘systemctl
         # import-environment’).
-        environment.SSH_ASKPASS = optionalString config.services.xserver.enable askPasswordWrapper;
+        environment.SSH_ASKPASS = optionalString cfg.startAgent askPasswordWrapper;
         environment.DISPLAY = "fake"; # required to make ssh-agent start $SSH_ASKPASS
       };
 
@@ -297,7 +297,7 @@ in
         fi
       '';
 
-    environment.variables.SSH_ASKPASS = optionalString config.services.xserver.enable askPassword;
+    environment.variables.SSH_ASKPASS = optionalString cfg.startAgent askPassword;
 
   };
 }
