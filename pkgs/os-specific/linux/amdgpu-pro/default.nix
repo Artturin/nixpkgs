@@ -28,9 +28,11 @@ let
 
 in stdenv.mkDerivation rec {
 
-  version = "17.40";
   pname = "amdgpu-pro";
-  build = "${version}-492261";
+  version = "21.10";
+  build1 = "${version}-1247438";
+  build = "5.9.20.104-1247438";
+  ubuntuVer = "20.04";
 
   libCompatDir = "/run/lib/${libArch}";
 
@@ -38,9 +40,9 @@ in stdenv.mkDerivation rec {
 
   src = fetchurl {
     url =
-    "https://www2.ati.com/drivers/linux/ubuntu/amdgpu-pro-${build}.tar.xz";
-    sha256 = "1c073lp9cq1rc2mddky2r0j2dv9dd167qj02visz37vwaxbm2r5h";
-    curlOpts = "--referer http://support.amd.com/en-us/kb-articles/Pages/AMD-Radeon-GPU-PRO-Linux-Beta-Driver%e2%80%93Release-Notes.aspx";
+    "https://drivers.amd.com/drivers/linux/amdgpu-pro-${build1}-ubuntu-${ubuntuVer}.tar.xz";
+    sha256 = "1qm1pc2ms27c96l0mf39h2x5r2jb36yh8xfky0srnm89k5qfcqrd";
+    curlOpts = "--referer https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-21-10";
   };
 
   hardeningDisable = [ "pic" "format" ];

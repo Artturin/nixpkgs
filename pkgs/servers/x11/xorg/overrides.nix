@@ -607,6 +607,18 @@ self: super:
             buildInputs = [ xorgproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
             postPatch = lib.optionalString stdenv.isLinux "sed '1i#include <malloc.h>' -i include/os.h";
             meta.platforms = lib.platforms.unix;
+        } else if (abiCompat == "1.20") then {
+            name = "xorg-server-1.20.11";
+            builder = ./builder.sh;
+            src = fetchurl {
+              url = "mirror://xorg/individual/xserver/xorg-server-1.20.11.tar.bz2";
+              sha256 = "0jacqgin8kcyy8fyv0lhgb4if8g9hp60rm3ih3s1mgps7xp7jk4i";
+            };
+            hardeningDisable = [ "bindnow" "relro" ];
+            nativeBuildInputs = [ pkg-config ];
+            buildInputs = [ xorgproto openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
+            #postPatch = lib.optionalString stdenv.isLinux "sed '1i#include <malloc.h>' -i include/os.h";
+            meta.platforms = lib.platforms.unix;
         } else throw "unsupported xorg abiCompat ${abiCompat} for ${attrs_passed.name}";
 
     in attrs //
