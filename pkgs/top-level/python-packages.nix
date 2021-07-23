@@ -5887,6 +5887,8 @@ in {
 
   pydeconz = callPackage ../development/python-modules/pydeconz { };
 
+  pydeck = callPackage ../development/python-modules/pydeck { };
+
   pydelijn = callPackage ../development/python-modules/pydelijn { };
 
   pydenticon = callPackage ../development/python-modules/pydenticon { };
