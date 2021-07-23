@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "sigrok-cli";
-  version = "0.7.1";
+  version = "0.7.2";
 
   src = fetchurl {
     url = "https://sigrok.org/download/source/${pname}/${pname}-${version}.tar.gz";
-    sha256 = "15vpn1psriadcbl6v9swwgws7dva85ld03yv6g1mgm27kx11697m";
+    sha256 = "1f0a2k8qdcin0pqiqq5ni4khzsnv61l21v1dfdjzayw96qzl9l3i";
   };
 
   nativeBuildInputs = [ pkg-config ];
