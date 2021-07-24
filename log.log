@@ -1,0 +1,32 @@
+these derivations will be built:
+  /nix/store/8bjjjkh93xk965c30x23l40yyn4vp2q7-skia-aseprite-m81.drv
+building '/nix/store/8bjjjkh93xk965c30x23l40yyn4vp2q7-skia-aseprite-m81.drv'...
+unpacking sources
+unpacking source archive /nix/store/hsk0msxi3x6wkr10l8kys58q3jv4l5a5-source
+source root is source
+patching sources
+configuring
+Done. Made 57 targets from 43 files in 222ms
+building
+ninja: Entering directory `out/Release'
+[560/889] compile ../../src/core/SkOpts.cppct.cppppntly/tools/subsetter/subsetter.ccKetter.cccc
+In file included from ../../src/sksl/SkSLInterpreter.h:10,
+                 from ../../src/opts/SkRasterPipeline_opts.h:13,
+                 from ../../src/core/SkOpts.cpp:43:
+../../src/sksl/SkSLByteCode.h: In constructor 'SkSL::ByteCode::Vector<width>::Vector(skvx::Vec<width, int>) [with int width = 8]':
+../../src/sksl/SkSLByteCode.h:91:9: note: the ABI for passing parameters with 32-byte alignment has changed in GCC 4.6
+   91 |         Vector(skvx::Vec<width, int32_t> i)
+      |         ^~~~~~
+[887/889] compile ../../src/opts/SkOpts_sse41.cppource/dng_lossless_jpeg.cpp[Kcce.cct5.cc
+In file included from ../../src/sksl/SkSLInterpreter.h:10,
+                 from ../../src/opts/SkRasterPipeline_opts.h:13,
+                 from ../../src/opts/SkOpts_sse41.cpp:12:
+../../src/sksl/SkSLByteCode.h: In constructor 'SkSL::ByteCode::Vector<width>::Vector(skvx::Vec<width, int>) [with int width = 8]':
+../../src/sksl/SkSLByteCode.h:91:9: note: the ABI for passing parameters with 32-byte alignment has changed in GCC 4.6
+   91 |         Vector(skvx::Vec<width, int32_t> i)
+      |         ^~~~~~
+[889/889] link libskia.atamp
+installing
+/nix/store/bmxafbqrlvcwpcwd21irmirid4rkpank-stdenv-linux/setup: line 1320: tree: command not found
+builder for '/nix/store/8bjjjkh93xk965c30x23l40yyn4vp2q7-skia-aseprite-m81.drv' failed with exit code 127
+error: build of '/nix/store/8bjjjkh93xk965c30x23l40yyn4vp2q7-skia-aseprite-m81.drv' failed
