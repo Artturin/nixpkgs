@@ -12708,6 +12708,7 @@ with pkgs;
   };
 
   tinycc = callPackage ../development/compilers/tinycc { };
+  tinycc-unstable = callPackage ../development/compilers/tinycc/unstable.nix { };
 
   tinygo = callPackage ../development/compilers/tinygo {
     inherit (llvmPackages_10) llvm clang-unwrapped lld;
