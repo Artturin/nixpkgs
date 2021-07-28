@@ -26,7 +26,7 @@ let
     , desktopName ? # browserName with first letter capitalized
       (lib.toUpper (lib.substring 0 1 browserName) + lib.substring 1 (-1) browserName)
     , nameSuffix ? ""
-    , icon ? browserName
+    , icon ? browser.icon or browserName
     , extraNativeMessagingHosts ? []
     , pkcs11Modules ? []
     , forceWayland ? false
@@ -162,11 +162,11 @@ let
       inherit pname version;
 
       desktopItem = makeDesktopItem {
-        name = browserName;
+        name = browserName + nameSuffix;
         exec = "${browserName}${nameSuffix} %U";
         inherit icon;
         comment = "";
-        desktopName = "${desktopName}${nameSuffix}${lib.optionalString forceWayland " (Wayland)"}";
+        desktopName = "${desktopName}${lib.optionalString forceWayland " (Wayland)"}";
         genericName = "Web Browser";
         categories = "Network;WebBrowser;";
         mimeType = lib.concatStringsSep ";" [
@@ -178,6 +178,22 @@ let
           "x-scheme-handler/https"
           "x-scheme-handler/ftp"
         ];
+        extraEntries = ''
+          Keywords=Internet;WWW;Browser;Web;Explorer
+
+          Actions=new-window;new-private-window;
+
+          StartupWMClass=${icon}
+
+          [Desktop Action new-window]
+          Name=New Window
+          Exec=${browserName}${nameSuffix} --new-window %U
+
+          [Desktop Action new-private-window]
+          Name=New Private Window
+          Exec=${browserName}${nameSuffix} --private-window %U
+
+        '';
       };
 
       nativeBuildInputs = [ makeWrapper lndir ];
@@ -237,15 +253,20 @@ let
             exit 1
         fi
 
+        if [ -e "${nameSuffix}" ]; then
+          mv $executablePath $executablePath${nameSuffix}
+          executablePath="$executablePrefix/${browserName}${nameSuffix}"
+        fi
+
         if [ ! -L "$executablePath" ]
         then
           # Careful here, the file at executablePath may already be
           # a wrapper. That is why we postfix it with -old instead
           # of -wrapped.
-          oldExe="$executablePrefix"/".${browserName}"-old
+          oldExe="$executablePrefix"/".${browserName}${nameSuffix}"-old
           mv "$executablePath" "$oldExe"
         else
-          oldExe="$(readlink -v --canonicalize-existing "$executablePath")"
+          oldExe="$(readlink -v --canonicalize-existing "$executablePath${nameSuffix}")"
         fi
 
         if [ ! -x "${browser}${browser.execdir or "/bin"}/${browserName}" ]
@@ -283,7 +304,7 @@ let
             mkdir -p "$out/share/icons/hicolor/''${res}x''${res}/apps"
             icon=( "${browser}/lib/"*"/browser/chrome/icons/default/default''${res}.png" )
               if [ -e "$icon" ]; then ln -s "$icon" \
-                "$out/share/icons/hicolor/''${res}x''${res}/apps/${browserName}.png"
+                "$out/share/icons/hicolor/''${res}x''${res}/apps/${icon}.png"
               fi
             done
         fi

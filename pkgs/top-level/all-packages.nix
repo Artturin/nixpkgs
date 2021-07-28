@@ -24263,7 +24263,8 @@ in
   firefox-beta-bin = res.wrapFirefox firefox-beta-bin-unwrapped {
     browserName = "firefox";
     pname = "firefox-beta-bin";
-    desktopName = "Firefox Beta";
+    icon = "firefox-beta";
+    desktopName = "Firefox Beta Edition";
   };
 
   firefox-devedition-bin-unwrapped = callPackage ../applications/networking/browsers/firefox-bin {
@@ -24274,8 +24275,9 @@ in
   firefox-devedition-bin = res.wrapFirefox firefox-devedition-bin-unwrapped {
     browserName = "firefox";
     nameSuffix = "-devedition";
+    icon = "firefox-devedition";
     pname = "firefox-devedition-bin";
-    desktopName = "Firefox DevEdition";
+    desktopName = "Firefox Developer Edition";
   };
 
   flac = callPackage ../applications/audio/flac { };
