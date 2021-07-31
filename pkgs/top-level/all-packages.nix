@@ -27642,6 +27642,8 @@ in
     swt = swt_jdk8;
   };
 
+  tuxedo-control-center = callPackage ../misc/tuxedo-control-center { };
+
   twister = callPackage ../applications/networking/p2p/twister { };
 
   twmn = libsForQt5.callPackage ../applications/misc/twmn { };
