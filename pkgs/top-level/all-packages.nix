@@ -31103,6 +31103,13 @@ in
 
   darling-dmg = callPackage ../tools/filesystems/darling-dmg { };
 
+  darling = callPackage ../misc/emulators/darling { 
+    #inherit (darwin) cctools;
+    #stdenv = clangStdenv;
+    #inherit (darwin.apple_sdk.frameworks) AppKit Foundation;
+    #inherit (darwin.apple_sdk.libs) Xplugin;
+  };
+
   depotdownloader = callPackage ../tools/misc/depotdownloader { };
 
   desmume = callPackage ../misc/emulators/desmume { inherit (pkgs.gnome2) gtkglext libglade; };
