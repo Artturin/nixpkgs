@@ -27,6 +27,8 @@ stdenv.mkDerivation {
     "--enable-pcre"
     "--enable-zprofile=${placeholder "out"}/etc/zprofile"
     "--disable-site-fndir"
+    #"--enable-fndir=${placeholder "out"}/share/zsh/${version}/functions"
+    "--enable-function-subdirs"
   ];
 
   # the zsh/zpty module is not available on hydra
@@ -64,6 +66,17 @@ fi
 EOF
     ${if stdenv.hostPlatform == stdenv.buildPlatform then ''
       $out/bin/zsh -c "zcompile $out/etc/zprofile"
+      $out/bin/zsh -f << EOF
+        setopt extendedglob
+        DIRS=$(awk '/^#define FPATH_SUBDIRS/ { $1=""; $2=""; gsub(/[" ]/,""); tail=$0; } \
+               END                      { printf "%s\n", tail; };'            \
+	            Src/zshpaths.h)
+        ls $out/share/zsh/*/functions/$DIRS
+        for i in "$out/share/zsh/*/functions/$DIRS"; do
+          echo $i
+          zcompile -U -M $i.zwc $i/*~*.zwc(^/)
+        done
+EOF
     '' else ''
       ${lib.getBin buildPackages.zsh}/bin/zsh -c "zcompile $out/etc/zprofile"
     ''}
