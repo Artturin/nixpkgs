@@ -12,7 +12,7 @@ in fetchzip {
     unzip -j $downloadedFile weather-icons-${version}/_docs/font-source/weathericons-regular.otf -d $out/share/fonts/opentype
   '';
 
-  sha256 = "10zny9987wybq55sm803hrjkp33dq1lgmnxc15kssr8yb81g6qrl";
+  sha256 = "sha256-NGPzAloeZa1nCazb+mjAbYw7ZYYDoKpLwcvzg1Ly9oM=";
 
   meta = with lib; {
     description = "Weather Icons";
