@@ -9399,6 +9399,8 @@ in {
 
   winsspi = callPackage ../development/python-modules/winsspi { };
 
+  wikitools3 = callPackage ../development/python-modules/wikitools3 { };
+
   wled = callPackage ../development/python-modules/wled { };
 
   woob = callPackage ../development/python-modules/woob { };

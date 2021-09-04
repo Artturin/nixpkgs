@@ -32420,6 +32420,8 @@ with pkgs;
     pythonPackages = python3Packages;
   };
 
+  wikiteam = callPackage ../tools/misc/wikiteam { };
+
   wiki-js = callPackage ../servers/web-apps/wiki-js { };
 
   winePackagesFor = wineBuild: lib.makeExtensible (self: with self; {
