@@ -2,8 +2,8 @@
 
 callPackage ./base.nix rec {
   version = "unstable-2021-07-27";
-  rev = "b1d9de679474627754be5b960c75907ebc944431";
-  sha256 = "1fggahdh15dr9h6rz7hp61zn1ygbk3n4x3ksvisjcbc8p2dinvy5";
+  rev = "dda95e9b0b30771369efe66b4a47e94cf0ca7dc0";
+  sha256 = "sha256-7xK0p0XcSlQlKz+/gwX1WKp0ku6sy1cYW6jOZoFXKoU=";
 
   extraNative = [ which ] 
     ++ lib.optionals stdenv.isDarwin [ xcbuild ];

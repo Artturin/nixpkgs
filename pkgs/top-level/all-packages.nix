@@ -12707,8 +12707,12 @@ with pkgs;
     gconf = gnome2.GConf;
   };
 
-  tinycc = callPackage ../development/compilers/tinycc { };
-  tinycc-unstable = callPackage ../development/compilers/tinycc/unstable.nix { };
+  tinycc = callPackage ../development/compilers/tinycc { 
+    #inherit (darwin) DarwinTools cctools;
+  };
+  tinycc-unstable = callPackage ../development/compilers/tinycc/unstable.nix {
+    inherit (darwin) DarwinTools cctools;
+  };
 
   tinygo = callPackage ../development/compilers/tinygo {
     inherit (llvmPackages_10) llvm clang-unwrapped lld;

@@ -1,6 +1,6 @@
 { stdenv
 , lib
-, fetchFromRepoOrCz
+, fetchFromGitHub
 , perl
 , texinfo
 , version
@@ -17,7 +17,8 @@ stdenv.mkDerivation rec {
   pname = "tcc";
   inherit version upstreamVersion;
 
-  src = fetchFromRepoOrCz {
+  src = fetchFromGitHub {
+    owner = "tinycc";
     repo = "tinycc";
     inherit rev sha256;
   };
