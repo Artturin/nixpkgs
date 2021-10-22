@@ -74,10 +74,10 @@ stdenv.mkDerivation rec {
 	# We use this during the build, so patch shebangs in the fixed phase is too
 	# later. This is a template for string substitution so patch shebangs of
 	# the source is also too early.
-    (substituteAll {
-      src = ./absolute-python-shebang.patch;
-      python_bin = lib.escapeShellArg python3.interpreter;
-    })
+    #(substituteAll {
+    #  src = ./absolute-python-shebang.patch;
+    #  python_bin = lib.escapeShellArg python3.interpreter;
+    #})
   ] ++ lib.optionals x11Support [
     # Hardcode the cairo shared library path in the Cairo gir shipped with this package.
     # https://github.com/NixOS/nixpkgs/issues/34080
