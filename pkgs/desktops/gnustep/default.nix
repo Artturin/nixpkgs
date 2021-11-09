@@ -1,12 +1,12 @@
 { newScope
-, llvmPackages
+, clangStdenv
 }:
 
 let
   callPackage = newScope self;
 
   self = rec {
-    stdenv = llvmPackages.stdenv;
+    stdenv = clangStdenv;
 
     gsmakeDerivation = callPackage ./make/gsmakeDerivation.nix {};
     gorm = callPackage ./gorm {};

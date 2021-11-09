@@ -20,6 +20,7 @@
 , pkg-config
 , portaudio
 , libiberty
+, avahi
 }:
 gsmakeDerivation rec {
   pname = "gnustep-base";
@@ -32,7 +33,7 @@ gsmakeDerivation rec {
   propagatedBuildInputs = [
     aspell
     audiofile
-    cups
+    avahi
     gmp
     gnutls
     libffi

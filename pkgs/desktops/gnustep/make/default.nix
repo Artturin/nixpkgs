@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, clang, which, libobjc }:
+{ lib, stdenv, fetchurl, which, libobjc }:
 
 stdenv.mkDerivation rec {
   pname = "gnustep-make";
@@ -22,7 +22,8 @@ stdenv.mkDerivation rec {
     "GNUSTEP_INSTALLATION_DOMAIN=SYSTEM"
   ];
 
-  buildInputs = [ clang which libobjc ];
+  nativeBuildInputs = [ which ];
+  buildInputs = [ libobjc ];
   patches = [ ./fixup-paths.patch ];
   setupHook = ./setup-hook.sh;
   meta = {
