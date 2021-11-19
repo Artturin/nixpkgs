@@ -7,6 +7,7 @@ use File::Path;
 use File::Basename;
 use File::Slurp;
 use File::stat;
+use Term::ReadKey;
 
 umask(0022);
 
@@ -36,6 +37,8 @@ my $rootDir = ""; # = /
 my $force = 0;
 my $noFilesystems = 0;
 my $showHardwareConfig = 0;
+my $dontConfigureUser = 0;
+my $interactive = -t STDIN && -t STDOUT;
 
 for (my $n = 0; $n < scalar @ARGV; $n++) {
     my $arg = $ARGV[$n];
@@ -61,6 +64,12 @@ for (my $n = 0; $n < scalar @ARGV; $n++) {
     }
     elsif ($arg eq "--show-hardware-config") {
         $showHardwareConfig = 1;
+    }
+    elsif ($arg eq "--dont-configure-user") {
+        $dontConfigureUser = 1;
+    }
+    elsif ($arg eq "--non-interactive") {
+        $interactive = 0;
     }
     else {
         die "$0: unrecognized argument ‘$arg’\n";
@@ -593,6 +602,38 @@ EOF
     return $config;
 }
 
+sub generateUserConfig {
+    print "Username without spaces. Leave empty to skip: ";
+
+    my $name = ReadLine(0);
+    chomp $name;
+    return "" if($name eq "");
+
+    my $rawpassword = "";
+    until($rawpassword ne "") {
+        print "Password: ";
+        ReadMode 'noecho';
+        $rawpassword = ReadLine(0);
+        ReadMode 'normal';
+        chomp $rawpassword;
+        print "Empty password - try again\n" if($rawpassword eq "");
+    };
+
+    print "\n";
+    my $password = `mkpasswd -m sha-512 $rawpassword`;
+    chomp $password;
+
+    my $config = <<EOF;
+  users.users.$name = {
+    initialHashedPassword = "$password";
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+  };
+EOF
+
+    return $config;
+}
+
 sub generateXserverConfig {
     my $xserverEnabled = "@xserverEnabled@";
 
@@ -653,6 +694,8 @@ EOF
         }
 
         my $networkingDhcpConfig = generateNetworkingDhcpConfig();
+
+        my $userConfiguration = generateUserConfig() if(!$dontConfigureUser && $interactive);
 
         my $xserverConfig = generateXserverConfig();
 

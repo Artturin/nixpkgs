@@ -34,7 +34,7 @@ let
     name = "nixos-generate-config";
     src = ./nixos-generate-config.pl;
     path = lib.optionals (lib.elem "btrfs" config.boot.supportedFilesystems) [ pkgs.btrfs-progs ];
-    perl = "${pkgs.perl.withPackages (p: [ p.FileSlurp ])}/bin/perl";
+    perl = "${pkgs.perl.withPackages (p: [ p.FileSlurp p.TermReadKey ])}/bin/perl";
     inherit (config.system.nixos-generate-config) configuration desktopConfiguration;
     xserverEnabled = config.services.xserver.enable;
   };
@@ -169,6 +169,7 @@ in
         # Enable touchpad support (enabled default in most desktopManager).
         # services.xserver.libinput.enable = true;
 
+      $userConfiguration
         # Define a user account. Don't forget to set a password with ‘passwd’.
         # users.users.jane = {
         #   isNormalUser = true;
