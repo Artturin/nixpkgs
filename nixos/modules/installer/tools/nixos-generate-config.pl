@@ -288,7 +288,7 @@ if (`lsblk -o TYPE` =~ "lvm") {
     push @initrdKernelModules, "dm-snapshot";
 }
 
-my $virt = `systemd-detect-virt`;
+my $virt = `@detectvirt@`;
 chomp $virt;
 
 
@@ -407,7 +407,7 @@ foreach my $fs (read_file("/proc/self/mountinfo")) {
     # Maybe this is a bind-mount of a filesystem we saw earlier?
     if (defined $fsByDev{$fields[2]}) {
         # Make sure this isn't a btrfs subvolume.
-        my $msg = `btrfs subvol show $rootDir$mountPoint`;
+        my $msg = `@btrfs@ subvol show $rootDir$mountPoint`;
         if ($? != 0 || $msg =~ /ERROR:/s) {
             my $path = $fields[3]; $path = "" if $path eq "/";
             my $base = $fsByDev{$fields[2]};
@@ -445,7 +445,7 @@ EOF
 
     # Is this a btrfs filesystem?
     if ($fsType eq "btrfs") {
-        my ($status, @info) = runCommand("btrfs subvol show $rootDir$mountPoint");
+        my ($status, @info) = runCommand("@btrfs@ subvol show $rootDir$mountPoint");
         if ($status != 0 || join("", @info) =~ /ERROR:/) {
             die "Failed to retrieve subvolume info for $mountPoint\n";
         }
@@ -620,7 +620,7 @@ sub generateUserConfig {
     };
 
     print "\n";
-    my $password = `mkpasswd -m sha-512 $rawpassword`;
+    my $password = `@mkpasswd@ -m sha-512 $rawpassword`;
     chomp $password;
 
     my $config = <<EOF;
