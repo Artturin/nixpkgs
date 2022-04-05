@@ -708,6 +708,7 @@ rec {
       outputHash = hash;
       preferLocalBuild = true;
       allowSubstitutes = false;
+      meta.hydraPlatforms = [ ]; # requireFile srcs cannot be fetched by hydra
       builder = writeScript "restrict-message" ''
         source ${stdenvNoCC}/setup
         cat <<_EOF_
