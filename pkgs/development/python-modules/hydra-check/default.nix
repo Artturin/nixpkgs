@@ -2,46 +2,49 @@
 , buildPythonPackage
 , pythonOlder
 , fetchFromGitHub
-, docopt
 , requests
 , beautifulsoup4
-, mypy
-, types-requests
+, colorama
+, poetry-core
 }:
 
 buildPythonPackage rec {
   pname = "hydra-check";
-  version = "1.2.0";
-  disabled = pythonOlder "3.5";
+  version = "1.3.1";
+  disabled = pythonOlder "3.10";
+
+  format = "pyproject";
 
   src = fetchFromGitHub {
     owner = "nix-community";
     repo = pname;
-    rev = version;
-    sha256 = "EegoQ8qTrFGFYbCDsbAOE4Afg9haLjYdC0Cux/yvSk8=";
+    rev = "v${version}";
+    sha256 = "sha256-na2mWkJQWrBGeOF0q77Wzlx/IO22wI3eWChHdTRS2uQ=";
   };
 
+  nativeBuildInputs = [ poetry-core ];
   propagatedBuildInputs = [
-    docopt
     requests
     beautifulsoup4
+    colorama
   ];
 
-  checkInputs = [
-    mypy
-    types-requests
-  ];
-
-  checkPhase = ''
-    echo -e "\x1b[32m## run mypy\x1b[0m"
-    mypy hydracheck
+  doInstallCheck = true;
+  installCheckPhase = ''
+    runHook preInstallCheck
+    (
+      unset PATH
+      unset PYTHONPATH
+      $out/bin/hydra-check --help > /dev/null
+    )
+    runHook postInstallCheck
   '';
+
 
   meta = with lib; {
     description = "check hydra for the build status of a package";
     homepage = "https://github.com/nix-community/hydra-check";
     license = licenses.mit;
-    maintainers = with maintainers; [ makefu ];
+    maintainers = with maintainers; [ makefu artturin ];
   };
 }
-
