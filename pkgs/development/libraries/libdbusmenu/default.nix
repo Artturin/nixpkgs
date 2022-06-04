@@ -1,8 +1,10 @@
 { stdenv, fetchurl, lib, file
 , pkg-config, intltool
 , glib, dbus-glib, json-glib
+, gtkVersion ? null, gtk2 ? null, gtk3 ? null
+, withVala ? stdenv.buildPlatform == stdenv.hostPlatform
 , gobject-introspection, vala
-, gtkVersion ? null, gtk2 ? null, gtk3 ? null }:
+}:
 
 with lib;
 
@@ -15,11 +17,22 @@ stdenv.mkDerivation rec {
     sha256 = "12l7z8dhl917iy9h02sxmpclnhkdjryn08r8i4sr8l3lrlm4mk5r";
   };
 
-  nativeBuildInputs = [ vala pkg-config intltool gobject-introspection ];
+  strictDeps = true;
+  nativeBuildInputs = [
+    pkg-config
+    intltool
+    glib
+  ] ++ lib.optionals withVala [
+    vala
+    gobject-introspection
+  ];
 
   buildInputs = [
-    glib dbus-glib json-glib
-  ] ++ optional (gtkVersion != null) (if gtkVersion == "2" then gtk2 else gtk3);
+     dbus-glib json-glib
+  ] ++ optional (gtkVersion != null) (if gtkVersion == "2" then gtk2 else gtk3)
+    ++ lib.optionals withVala [
+    gobject-introspection
+  ];
 
   postPatch = ''
     for f in {configure,ltmain.sh,m4/libtool.m4}; do
@@ -37,6 +50,8 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "CFLAGS=-Wno-error"
     "--sysconfdir=/etc"
+    (lib.enableFeature withVala "vala")
+
     "--localstatedir=/var"
     (if gtkVersion == null then "--disable-gtk" else "--with-gtk=${gtkVersion}")
     "--disable-scrollkeeper"
