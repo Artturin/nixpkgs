@@ -1,5 +1,6 @@
 { lib, stdenv, fetchFromGitHub, pkg-config, xorgproto, libxcb
-, autoreconfHook, json-glib, gtk-doc, which
+, autoreconfHook, json-glib, gtk-doc, which, fetchpatch, glib
+, withIntrospection ? stdenv.buildPlatform == stdenv.hostPlatform
 , gobject-introspection
 }:
 
@@ -15,10 +16,25 @@ stdenv.mkDerivation rec {
     sha256 = "01fzvrbnzcwx0vxw29igfpza9zwzp2s7msmzb92v01z0rz0y5m0p";
   };
 
-  nativeBuildInputs = [ autoreconfHook which pkg-config ];
+  strictDeps = true;
+  nativeBuildInputs = [ autoreconfHook which pkg-config gtk-doc glib
+  ] ++ lib.optionals withIntrospection [
+    gobject-introspection
+  ];
 
-  buildInputs = [ libxcb json-glib gtk-doc xorgproto gobject-introspection ];
+  buildInputs = [ libxcb json-glib xorgproto
+  ] ++ lib.optionals withIntrospection [
+    gobject-introspection
+  ];
 
+  patches = [
+    # https://github.com/altdesktop/i3ipc-glib/pull/39
+    (fetchpatch {
+      name = "make-gi-actually-optional";
+      url = "https://patch-diff.githubusercontent.com/raw/altdesktop/i3ipc-glib/pull/39.diff";
+      sha256 = "sha256-cMTNI+SKWcemzG6HEIrEpcfR6h0oQ+0UnCMvJ15al1w=";
+    })
+  ];
 
   preAutoreconf = ''
     gtkdocize
