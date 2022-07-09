@@ -1,6 +1,7 @@
 { lib
 , stdenv
-, fetchurl
+, fetchFromGitLab
+, meson
 , glib
 , udev
 , libgudev
@@ -19,14 +20,19 @@
 
 stdenv.mkDerivation rec {
   pname = "modemmanager";
-  version = "1.18.6";
 
-  src = fetchurl {
-    url = "https://www.freedesktop.org/software/ModemManager/ModemManager-${version}.tar.xz";
-    sha256 = "sha256-1PgEsxz1BCOcXx1Jc8YglcAMuh7pq7UDcY2sbRRqRwo=";
+  version = "1.18.10";
+
+  src = fetchFromGitLab {
+    domain = "gitlab.freedesktop.org";
+    owner = "mobile-broadband";
+    repo = "modemmanager";
+    rev = version;
+    sha256 = "sha256-GGzk18gym+Dca0aLRCfpyoNHebMlAk+zQyztszSjVfQ=";
   };
 
   nativeBuildInputs = [
+    meson
     vala
     gobject-introspection
     gettext
