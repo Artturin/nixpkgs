@@ -24474,6 +24474,7 @@ let
       IPCShareLite
       JSON
       LWP
+      HTTPDaemon
       pkgs.cairo
       pkgs.mapnik
       pkgs.zlib
