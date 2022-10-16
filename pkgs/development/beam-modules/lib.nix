@@ -1,4 +1,4 @@
-{ pkgs, lib }:
+{ __splicedPackages, lib, makeOverridable }:
 
 rec {
 
@@ -6,11 +6,11 @@ rec {
   */
   callPackageWith = autoArgs: fn: args:
     let
-      f = if pkgs.lib.isFunction fn then fn else import fn;
+      f = if lib.isFunction fn then fn else import fn;
       auto = builtins.intersectAttrs (lib.functionArgs f) autoArgs;
     in f (auto // args);
 
-  callPackage = callPackageWith pkgs;
+  callPackage = callPackageWith __splicedPackages;
 
   /* Uses generic-builder to evaluate provided drv containing OTP-version
   specific data.
@@ -31,7 +31,7 @@ rec {
       builder = callPackage ../../development/interpreters/erlang/generic-builder.nix args;
     in
       callPackage drv {
-        mkDerivation = pkgs.makeOverridable builder;
+        mkDerivation = makeOverridable builder;
       };
 
   /* Uses generic-builder to evaluate provided drv containing Elixir version
@@ -52,7 +52,7 @@ rec {
       builder = callPackage ../interpreters/elixir/generic-builder.nix args;
     in
       callPackage drv {
-        mkDerivation = pkgs.makeOverridable builder;
+        mkDerivation = makeOverridable builder;
       };
 
   /* Uses generic-builder to evaluate provided drv containing Elixir version
@@ -73,7 +73,7 @@ rec {
       builder = callPackage ../interpreters/lfe/generic-builder.nix args;
     in
       callPackage drv {
-        mkDerivation = pkgs.makeOverridable builder;
+        mkDerivation = makeOverridable builder;
       };
 
 }
