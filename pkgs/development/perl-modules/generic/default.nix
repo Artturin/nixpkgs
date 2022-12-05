@@ -1,4 +1,4 @@
-{ lib, stdenv, perl, buildPerl, toPerlModule }:
+{ lib, stdenv, perl, toPerlModule }:
 
 { buildInputs ? []
 , nativeBuildInputs ? []
@@ -43,7 +43,7 @@ lib.throwIf (attrs ? name) "buildPerlPackage: `name` (\"${attrs.name}\") is depr
     buildInputs = buildInputs ++ [ perl ];
     nativeBuildInputs = nativeBuildInputs ++ [ (perl.mini or perl) ];
 
-    fullperl = buildPerl;
+    fullperl = perl.__spliced.buildHost or perl;
 
     inherit outputs src doCheck checkTarget enableParallelBuilding;
     inherit PERL_AUTOINSTALL AUTOMATED_TESTING PERL_USE_UNSAFE_INC;
