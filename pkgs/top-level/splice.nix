@@ -126,6 +126,8 @@ in
 
   newScope = extra: lib.callPackageWith (splicedPackagesWithXorg // extra);
 
+  pkgs = pkgs.__splicedPackages;
+
   # Haskell package sets need this because they reimplement their own
   # `newScope`.
   __splicedPackages = splicedPackages // { recurseForDerivations = false; };
