@@ -4,6 +4,8 @@ stdenv.mkDerivation rec {
   version = "1.2.4";
   pname = "libnftnl";
 
+  outputs = ["out" "dev"];
+
   src = fetchurl {
     url = "https://netfilter.org/projects/${pname}/files/${pname}-${version}.tar.bz2";
     hash = "sha256-wP4jO+TN/XA+fVl37462P8vx0AUrYEThsj1HyjViR38=";

@@ -4,6 +4,8 @@ stdenv.mkDerivation rec {
   pname = "libmnl";
   version = "1.0.5";
 
+  outputs = ["out" "dev"];
+
   src = fetchurl {
     url = "https://netfilter.org/projects/libmnl/files/${pname}-${version}.tar.bz2";
     sha256 = "09851ns07399rbz0y8slrlmnw3fn1nakr8d37pxjn5gkks8rnjr7";

@@ -86,7 +86,7 @@ in buildPythonApplication rec {
     ./fix-122159.patch # https://github.com/NixOS/nixpkgs/issues/122159
   ];
 
-  INCLUDE_DIRS = "${pam}/include";
+  INCLUDE_DIRS = "${lib.getDev pam}/include";
 
   nativeBuildInputs = [
     gobject-introspection

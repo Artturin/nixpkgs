@@ -11,6 +11,8 @@ stdenv.mkDerivation rec {
   pname = "libbpf";
   version = "1.0.1";
 
+  outputs = ["out" "dev"];
+
   src = fetchFromGitHub {
     owner = "libbpf";
     repo = "libbpf";

@@ -18,6 +18,8 @@ stdenv.mkDerivation rec {
   pname = "kbd";
   version = "2.5.1";
 
+  outputs = ["out" "dev"];
+
   src = fetchurl {
     url = "mirror://kernel/linux/utils/kbd/${pname}-${version}.tar.xz";
     sha256 = "sha256-zN9FI4emOAlz0pJzY+nLuTn6IGiRWm+Tf/nSRSICRoM=";
