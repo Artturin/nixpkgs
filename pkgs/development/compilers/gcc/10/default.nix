@@ -187,7 +187,7 @@ stdenv.mkDerivation ({
     inherit lib;
     inherit version targetPlatform hostPlatform gnatboot langAda langGo langJit crossStageStatic enableMultilib;
   }) + ''
-    ln -sf ${libxcrypt}/include/crypt.h libsanitizer/sanitizer_common/crypt.h
+    ln -sf ${lib.getDev libxcrypt}/include/crypt.h libsanitizer/sanitizer_common/crypt.h
   '';
 
   dontDisableStatic = true;

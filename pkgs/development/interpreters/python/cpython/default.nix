@@ -321,7 +321,7 @@ in with passthru; stdenv.mkDerivation {
   ] ++ optionals (openssl' != null) [
     "--with-openssl=${openssl'.dev}"
   ] ++ optionals (libxcrypt != null) [
-    "CFLAGS=-I${libxcrypt}/include"
+    "CFLAGS=-I${lib.getDev libxcrypt}/include"
     "LIBS=-L${libxcrypt}/lib"
   ] ++ optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
     "ac_cv_buggy_getaddrinfo=no"
