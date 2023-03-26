@@ -72,6 +72,7 @@ stdenv.mkDerivation rec {
     # We are still using ssh-agent from gnome-keyring.
     # https://github.com/NixOS/nixpkgs/issues/140824
     "-Dssh_agent=false"
+    "-Dgpg_path=${lib.getExe gnupg}"
   ];
 
   doCheck = false; # fails 21 out of 603 tests, needs dbus daemon
@@ -80,6 +81,9 @@ stdenv.mkDerivation rec {
 
   postPatch = ''
     patchShebangs gcr/fixtures/
+    substituteInPlace meson.build \
+      --replace "ssh_add_path =" "ssh_add_path = '${lib.getBin openssh}/bin/ssh-add' #" \
+      --replace "ssh_agent_path =" "ssh_agent_path = '${lib.getBin openssh}/bin/ssh-agent' #"
   '';
 
   postFixup = ''
