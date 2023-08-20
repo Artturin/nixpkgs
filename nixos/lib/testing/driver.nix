@@ -175,7 +175,7 @@ in
   };
 
   config = {
-    _module.args.hostPkgs = config.hostPkgs;
+    _module.args.hostPkgs = config.hostPkgs.__splicedPackages;
 
     driver = withChecks driver;
 
