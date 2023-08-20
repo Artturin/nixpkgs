@@ -4,7 +4,7 @@ let
 
   # Reifies and correctly wraps the python test driver for
   # the respective qemu version and with or without ocr support
-  testDriver = hostPkgs.callPackage ../test-driver {
+  testDriver = hostPkgs.buildPackages.callPackage ../test-driver {
     inherit (config) enableOCR extraPythonPackages;
     qemu_pkg = config.qemu.package;
     imagemagick_light = hostPkgs.imagemagick_light.override { inherit (hostPkgs) libtiff; };
@@ -39,12 +39,13 @@ let
   withChecks = lib.warnIf config.skipLint "Linting is disabled";
 
   driver =
-    hostPkgs.runCommand "nixos-test-driver-${config.name}"
+    hostPkgs.buildPackages.runCommand "nixos-test-driver-${config.name}"
       {
         # inherit testName; TODO (roberth): need this?
         nativeBuildInputs = [
           hostPkgs.makeWrapper
-        ] ++ lib.optionals (!config.skipTypeCheck) [ hostPkgs.mypy ];
+        ] ++ lib.optionals (!config.skipTypeCheck) [ hostPkgs.mypy ]
+          ++ lib.optionals (!config.skipLint) [ hostPkgs.python3Packages.pyflakes ];
         buildInputs = [ testDriver ];
         testScript = config.testScriptString;
         preferLocalBuild = true;
@@ -86,7 +87,7 @@ let
           PYFLAKES_BUILTINS="$(
             echo -n ${lib.escapeShellArg (lib.concatStringsSep "," pythonizedNames)},
             < ${lib.escapeShellArg "driver-symbols"}
-          )" ${hostPkgs.python3Packages.pyflakes}/bin/pyflakes $out/test-script
+          )" pyflakes $out/test-script
         ''}
 
         # set defaults through environment
