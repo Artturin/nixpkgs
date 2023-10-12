@@ -184,6 +184,16 @@ buildPythonPackage rec {
     "test_opt_125m"
     "test_flan_t5"
     "test_flan_t5"
+    # When the system is under load the following error happens
+    #  Unreliable test timings! On an initial run, this test took .... If you expect this sort of variability in your test timings, consider turning deadlines off for this test by setting deadline=None.
+    # There seems to be no way to set `@hypothesis.settings(deadline=500)` on the cmdline
+    "test_config_derived_follow_attrs_protocol"
+    "test_complex_struct_dump"
+    "test_conversion_to_transformers"
+    "test_config_derivation"
+    "test_conversion_to_transformers"
+    "test_click_conversion"
+    "test_simple_struct_dump"
   ];
 
   pythonImportsCheck = [ "openllm" ];
