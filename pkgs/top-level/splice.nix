@@ -170,5 +170,5 @@ in
 
   # Haskell package sets need this because they reimplement their own
   # `newScope`.
-  __splicedPackages = splicedPackages // { recurseForDerivations = false; };
+  __splicedPackages = if actuallySplice then splicedPackages // { recurseForDerivations = false; } else pkgs;
 }
