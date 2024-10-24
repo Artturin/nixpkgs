@@ -129,6 +129,13 @@ let
     "packages"
   ];
 
+  packagesWithXorg = pkgs // builtins.removeAttrs pkgs.xorg [
+    "callPackage"
+    "newScope"
+    "overrideScope"
+    "packages"
+  ];
+
 in
 
 {
@@ -139,9 +146,9 @@ in
   # `newScope' for sets of packages in `pkgs' (see e.g. `gnome' below).
   callPackage = pkgs.newScope { };
 
-  callPackages = lib.callPackagesWith splicedPackagesWithXorg;
+  callPackages = lib.callPackagesWith (if actuallySplice then splicedPackagesWithXorg else packagesWithXorg);
 
-  newScope = extra: lib.callPackageWith (splicedPackagesWithXorg // extra);
+  newScope = extra: lib.callPackageWith ((if actuallySplice then splicedPackagesWithXorg else packagesWithXorg) // extra);
 
   # prefill 2 fields of the function for convenience
   makeScopeWithSplicing = lib.makeScopeWithSplicing splicePackages pkgs.newScope;
